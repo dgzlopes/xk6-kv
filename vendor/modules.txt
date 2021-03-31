@@ -1,0 +1,74 @@
+# github.com/DataDog/zstd v1.4.1
+github.com/DataDog/zstd
+# github.com/cespare/xxhash v1.1.0
+github.com/cespare/xxhash
+# github.com/dgraph-io/badger/v3 v3.2011.1
+## explicit
+github.com/dgraph-io/badger/v3
+github.com/dgraph-io/badger/v3/fb
+github.com/dgraph-io/badger/v3/options
+github.com/dgraph-io/badger/v3/pb
+github.com/dgraph-io/badger/v3/skl
+github.com/dgraph-io/badger/v3/table
+github.com/dgraph-io/badger/v3/trie
+github.com/dgraph-io/badger/v3/y
+# github.com/dgraph-io/ristretto v0.0.4-0.20210122082011-bb5d392ed82d
+github.com/dgraph-io/ristretto
+github.com/dgraph-io/ristretto/z
+github.com/dgraph-io/ristretto/z/simd
+# github.com/dustin/go-humanize v1.0.0
+github.com/dustin/go-humanize
+# github.com/golang/groupcache v0.0.0-20190702054246-869f871628b6
+github.com/golang/groupcache/lru
+# github.com/golang/protobuf v1.4.2
+github.com/golang/protobuf/proto
+# github.com/golang/snappy v0.0.1
+github.com/golang/snappy
+# github.com/google/flatbuffers v1.12.0
+github.com/google/flatbuffers/go
+# github.com/loadimpact/k6 v0.29.0
+## explicit
+github.com/loadimpact/k6/js/internal/modules
+github.com/loadimpact/k6/js/modules
+# github.com/pkg/errors v0.9.1
+github.com/pkg/errors
+# go.opencensus.io v0.22.5
+go.opencensus.io
+go.opencensus.io/internal
+go.opencensus.io/trace
+go.opencensus.io/trace/internal
+go.opencensus.io/trace/tracestate
+# golang.org/x/net v0.0.0-20201021035429-f5854403a974
+golang.org/x/net/internal/timeseries
+golang.org/x/net/trace
+# golang.org/x/sys v0.0.0-20200930185726-fdedc70b468f
+golang.org/x/sys/internal/unsafeheader
+golang.org/x/sys/unix
+# google.golang.org/protobuf v1.24.0
+google.golang.org/protobuf/encoding/prototext
+google.golang.org/protobuf/encoding/protowire
+google.golang.org/protobuf/internal/descfmt
+google.golang.org/protobuf/internal/descopts
+google.golang.org/protobuf/internal/detrand
+google.golang.org/protobuf/internal/encoding/defval
+google.golang.org/protobuf/internal/encoding/messageset
+google.golang.org/protobuf/internal/encoding/tag
+google.golang.org/protobuf/internal/encoding/text
+google.golang.org/protobuf/internal/errors
+google.golang.org/protobuf/internal/fieldnum
+google.golang.org/protobuf/internal/fieldsort
+google.golang.org/protobuf/internal/filedesc
+google.golang.org/protobuf/internal/filetype
+google.golang.org/protobuf/internal/flags
+google.golang.org/protobuf/internal/genname
+google.golang.org/protobuf/internal/impl
+google.golang.org/protobuf/internal/mapsort
+google.golang.org/protobuf/internal/pragma
+google.golang.org/protobuf/internal/set
+google.golang.org/protobuf/internal/strs
+google.golang.org/protobuf/internal/version
+google.golang.org/protobuf/proto
+google.golang.org/protobuf/reflect/protoreflect
+google.golang.org/protobuf/reflect/protoregistry
+google.golang.org/protobuf/runtime/protoiface
+google.golang.org/protobuf/runtime/protoimpl
