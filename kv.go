@@ -24,13 +24,18 @@ var client *Client
 
 // XClient represents the Client constructor (i.e. `new kv.Client()`) and
 // returns a new Key Value client object.
-func (r *KV) XClient(ctxPtr *context.Context, name string) interface{} {
+func (r *KV) XClient(ctxPtr *context.Context, name string, memory bool) interface{} {
 	rt := common.GetRuntime(*ctxPtr)
 	if check != true {
 		if name == "" {
 			name = "/tmp/badger"
 		}
-		db, _ := badger.Open(badger.DefaultOptions(name).WithLoggingLevel(badger.ERROR))
+		var db *badger.DB
+		if memory {
+			db, _ = badger.Open(badger.DefaultOptions("").WithLoggingLevel(badger.ERROR).WithInMemory(true))
+		} else {
+			db, _ = badger.Open(badger.DefaultOptions(name).WithLoggingLevel(badger.ERROR))
+		}
 		client = &Client{db: db}
 		check = true
 		return common.Bind(rt, client, ctxPtr)
