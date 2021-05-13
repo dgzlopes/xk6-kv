@@ -4,8 +4,8 @@ import (
 	"context"
 
 	badger "github.com/dgraph-io/badger/v3"
-	"github.com/loadimpact/k6/js/common"
-	"github.com/loadimpact/k6/js/modules"
+	"go.k6.io/k6/js/common"
+	"go.k6.io/k6/js/modules"
 )
 
 func init() {
