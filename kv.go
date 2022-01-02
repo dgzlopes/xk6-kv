@@ -94,13 +94,15 @@ func (c *Client) ViewPrefix(prefix string) map[string]string {
 
 func (c *Client) DeleteValue(key string) error {
 	fmt.Println("DeleteValue test ", key)
-	err := c.db.View(func(txn *badger.Txn) error {
+	err := c.db.Update(func(txn *badger.Txn) error {
 		item, _ := txn.Get([]byte(key))
-		_ = item.Value(func(val []byte) error {
-			return nil
-		})
-		err := txn.Delete([]byte(key))
-		return err
+		if item != nil {
+			valCopy, _ := item.ValueCopy(nil)
+			fmt.Printf("Find a value with key %s: %s", key, valCopy)
+			err := txn.Delete([]byte(key))
+			return err
+		}
+		return nil
 	})
 	return err
 }
