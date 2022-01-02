@@ -5,7 +5,6 @@ import (
 	"fmt"
 
 	badger "github.com/dgraph-io/badger/v3"
-	"github.com/dop251/goja"
 	"go.k6.io/k6/js/common"
 	"go.k6.io/k6/js/modules"
 )
@@ -19,7 +18,6 @@ type KV struct{}
 
 type Client struct {
 	db *badger.DB
-	rt *goja.Runtime
 }
 
 var check = false
@@ -39,7 +37,7 @@ func (r *KV) XClient(ctxPtr *context.Context, name string, memory bool) interfac
 		} else {
 			db, _ = badger.Open(badger.DefaultOptions(name).WithLoggingLevel(badger.ERROR))
 		}
-		client = &Client{db: db, rt: rt}
+		client = &Client{db: db}
 		check = true
 		return common.Bind(rt, client, ctxPtr)
 	} else {
