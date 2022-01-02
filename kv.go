@@ -3,6 +3,7 @@ package kv
 import (
 	"context"
 	"fmt"
+	"time"
 
 	badger "github.com/dgraph-io/badger/v3"
 	"go.k6.io/k6/js/common"
@@ -55,6 +56,16 @@ func (c *Client) Set(key string, value string) error {
 	return err
 }
 
+// Set the given key with the given value with TTL in second
+func (c *Client) SetWithTTLInSecond(key string, value string, ttl int) error {
+	err := c.db.Update(func(txn *badger.Txn) error {
+		e := badger.NewEntry([]byte(key), []byte(value)).WithTTL((time.Duration(ttl) * time.Second))
+		err := txn.SetEntry(e)
+		return err
+	})
+	return err
+}
+
 // Get returns the value for the given key.
 func (c *Client) Get(key string) (string, error) {
 	var valCopy []byte
@@ -94,6 +105,7 @@ func (c *Client) ViewPrefix(prefix string) map[string]string {
 	return m
 }
 
+// Delete the given key
 func (c *Client) Delete(key string) error {
 	err := c.db.Update(func(txn *badger.Txn) error {
 		item, _ := txn.Get([]byte(key))
