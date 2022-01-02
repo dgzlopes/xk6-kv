@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	badger "github.com/dgraph-io/badger/v3"
+	"github.com/dop251/goja"
 	"go.k6.io/k6/js/common"
 	"go.k6.io/k6/js/modules"
 )
@@ -18,6 +19,7 @@ type KV struct{}
 
 type Client struct {
 	db *badger.DB
+	rt *goja.Runtime
 }
 
 var check = false
@@ -37,7 +39,7 @@ func (r *KV) XClient(ctxPtr *context.Context, name string, memory bool) interfac
 		} else {
 			db, _ = badger.Open(badger.DefaultOptions(name).WithLoggingLevel(badger.ERROR))
 		}
-		client = &Client{db: db}
+		client = &Client{db: db, rt: rt}
 		check = true
 		return common.Bind(rt, client, ctxPtr)
 	} else {
@@ -56,17 +58,19 @@ func (c *Client) Set(key string, value string) error {
 }
 
 // Get returns the value for the given key.
-func (c *Client) Get(key string) string {
+func (c *Client) Get(key string) (string, error) {
 	var valCopy []byte
 	_ = c.db.View(func(txn *badger.Txn) error {
 		item, _ := txn.Get([]byte(key))
-		_ = item.Value(func(val []byte) error {
-			valCopy = append([]byte{}, val...)
-			return nil
-		})
+		if item != nil {
+			valCopy, _ = item.ValueCopy(nil)
+		}
 		return nil
 	})
-	return string(valCopy)
+	if len(valCopy) > 0 {
+		return string(valCopy), nil
+	}
+	return "", fmt.Errorf("error in get value with key %s", key)
 }
 
 // ViewPrefix return all the key value pairs where the key starts with some prefix.
@@ -93,12 +97,9 @@ func (c *Client) ViewPrefix(prefix string) map[string]string {
 }
 
 func (c *Client) Delete(key string) error {
-	fmt.Println("DeleteValue test ", key)
 	err := c.db.Update(func(txn *badger.Txn) error {
 		item, _ := txn.Get([]byte(key))
 		if item != nil {
-			valCopy, _ := item.ValueCopy(nil)
-			fmt.Printf("Find a value with key %s: %s", key, valCopy)
 			err := txn.Delete([]byte(key))
 			return err
 		}

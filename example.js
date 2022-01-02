@@ -10,7 +10,7 @@ export const options = {
     results: {
       exec: 'results',
       executor: 'per-vu-iterations',
-      startTime: '5s',
+      startTime: '3s',
       vus: 1,
     },
   },
@@ -24,9 +24,17 @@ export function generator() {
 
 export function results() {
   client.delete("hello_1");
-  console.log(client.get("hello_1"));
+  client.delete("hello_1");
+  client.delete("hello_1");
+  try {
+    var keyDeleteValue = client.get("hello_1");
+    console.log(typeof (keyDeleteValue));
+  }
+  catch (err) {
+    console.log("empty value");
+  }
   var r = client.viewPrefix("hello");
   for (var key in r) {
-      console.log(key,r[key])
+    console.log(key, r[key])
   }
 }
