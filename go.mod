@@ -1,4 +1,4 @@
-module github.com/minhhoangvn/xk6-kv
+module github.com/dgzlopes/xk6-kv
 
 go 1.15
 
