@@ -2,6 +2,7 @@ package kv
 
 import (
 	"context"
+	"fmt"
 
 	badger "github.com/dgraph-io/badger/v3"
 	"go.k6.io/k6/js/common"
@@ -89,4 +90,17 @@ func (c *Client) ViewPrefix(prefix string) map[string]string {
 		return nil
 	})
 	return m
+}
+
+func (c *Client) DeleteValue(key string) error {
+	fmt.Println("DeleteValue test ", key)
+	err := c.db.View(func(txn *badger.Txn) error {
+		item, _ := txn.Get([]byte(key))
+		_ = item.Value(func(val []byte) error {
+			return nil
+		})
+		err := txn.Delete([]byte(key))
+		return err
+	})
+	return err
 }
