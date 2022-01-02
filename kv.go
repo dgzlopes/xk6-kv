@@ -92,7 +92,7 @@ func (c *Client) ViewPrefix(prefix string) map[string]string {
 	return m
 }
 
-func (c *Client) DeleteValue(key string) error {
+func (c *Client) Delete(key string) error {
 	fmt.Println("DeleteValue test ", key)
 	err := c.db.Update(func(txn *badger.Txn) error {
 		item, _ := txn.Get([]byte(key))
