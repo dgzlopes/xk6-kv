@@ -23,6 +23,7 @@ export function generator() {
 }
 
 export function results() {
+  client.delete("hello_1");
   console.log(client.get("hello_1"));
   var r = client.viewPrefix("hello");
   for (var key in r) {
