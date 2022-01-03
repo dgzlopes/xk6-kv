@@ -2,6 +2,8 @@ package kv
 
 import (
 	"context"
+	"fmt"
+	"time"
 
 	badger "github.com/dgraph-io/badger/v3"
 	"go.k6.io/k6/js/common"
@@ -54,18 +56,30 @@ func (c *Client) Set(key string, value string) error {
 	return err
 }
 
+// Set the given key with the given value with TTL in second
+func (c *Client) SetWithTTLInSecond(key string, value string, ttl int) error {
+	err := c.db.Update(func(txn *badger.Txn) error {
+		e := badger.NewEntry([]byte(key), []byte(value)).WithTTL((time.Duration(ttl) * time.Second))
+		err := txn.SetEntry(e)
+		return err
+	})
+	return err
+}
+
 // Get returns the value for the given key.
-func (c *Client) Get(key string) string {
+func (c *Client) Get(key string) (string, error) {
 	var valCopy []byte
 	_ = c.db.View(func(txn *badger.Txn) error {
 		item, _ := txn.Get([]byte(key))
-		_ = item.Value(func(val []byte) error {
-			valCopy = append([]byte{}, val...)
-			return nil
-		})
+		if item != nil {
+			valCopy, _ = item.ValueCopy(nil)
+		}
 		return nil
 	})
-	return string(valCopy)
+	if len(valCopy) > 0 {
+		return string(valCopy), nil
+	}
+	return "", fmt.Errorf("error in get value with key %s", key)
 }
 
 // ViewPrefix return all the key value pairs where the key starts with some prefix.
@@ -89,4 +103,17 @@ func (c *Client) ViewPrefix(prefix string) map[string]string {
 		return nil
 	})
 	return m
+}
+
+// Delete the given key
+func (c *Client) Delete(key string) error {
+	err := c.db.Update(func(txn *badger.Txn) error {
+		item, _ := txn.Get([]byte(key))
+		if item != nil {
+			err := txn.Delete([]byte(key))
+			return err
+		}
+		return nil
+	})
+	return err
 }
